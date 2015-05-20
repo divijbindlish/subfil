@@ -4,8 +4,9 @@ var http = require('http');
 var path = require('path');
 var os = require('os');
 
-var md5 = require('MD5');
 var isVideo = require('is-video');
+var md5 = require('MD5');
+var request = require('request');
 
 var noop = function () {};
 
@@ -57,6 +58,46 @@ var generateHash = function (filename, callback) {
 	});
 };
 
+var availableLanguages = function (hash, callback) {
+	callback = arguments[arguments.length - 1];
+	if (typeof callback !== 'function') {
+		callback = noop;
+	}
+
+	if (!hash.match(/^[a-f0-9]{32}$/)) {
+		var err = new Error('Invalid MD5 hash');
+		callback(err, undefined);
+		return;
+	}
+
+	request({
+		url: 'http://api.thesubdb.com',
+		qs: {
+			action: 'search',
+			hash: hash,
+		},
+		method: 'GET',
+		headers: {
+			'User-Agent': 'SubDB/1.0 (Pyrrot/0.1; http://github.com/jrhames/pyrrot-cli)',
+		}
+	}, function (err, response, body) {
+		if (err) {
+			callback(err, undefined);
+			return;
+		}
+
+		if (response.statusCode === 404) {
+			err = new Error('No subtitles for hash');
+			callback(err, undefined);
+			return;
+		}
+
+		var languages = response.body.split(',');
+		callback(undefined, languages);
+	});
+};
+
 module.exports = {
-	generateHash: generateHash
+	generateHash: generateHash,
+	availableLanguages: availableLanguages,
 };
