@@ -4,20 +4,24 @@ var http = require('http');
 var path = require('path');
 var os = require('os');
 
-var isVideo = require('is-video');
+var videoExtensions = require('video-extensions');
 var allLanguages = require('./languages');
 var md5 = require('MD5');
 var request = require('request');
 
-var noop = function () {};
+var NOOP = function () {};
+
+var USER_AGENT_STRING = 'SubDB/1.0 (subfil/0.1; '
+	+ 'https://github.com/divijbindlish/subfil)';
 
 var generateHash = function (filename, callback) {
 	callback = arguments[arguments.length - 1];
 	if (typeof callback !== 'function') {
-		callback = noop;
+		callback = NOOP;
 	}
 
-	if (!isVideo(filename)) {
+	var ext = path.extname(filename);
+	if (videoExtensions.indexOf(ext) === -1) {
 		var err = new Error('Invalid video file');
 		callback(err, undefined);
 		return;
@@ -62,7 +66,7 @@ var generateHash = function (filename, callback) {
 var availableLanguages = function (hash, callback) {
 	callback = arguments[arguments.length - 1];
 	if (typeof callback !== 'function') {
-		callback = noop;
+		callback = NOOP;
 	}
 
 	if (!hash.match(/^[a-f0-9]{32}$/)) {
@@ -79,7 +83,7 @@ var availableLanguages = function (hash, callback) {
 		},
 		method: 'GET',
 		headers: {
-			'User-Agent': 'SubDB/1.0 (Pyrrot/0.1; http://github.com/jrhames/pyrrot-cli)',
+			'User-Agent': USER_AGENT_STRING,
 		}
 	}, function (err, response, body) {
 		if (err) {
@@ -104,32 +108,7 @@ var availableLanguages = function (hash, callback) {
 	});
 };
 
-var download = function (hash, language, destination, callback) {
-	callback = arguments[arguments.length - 1];
-	if (typeof callback !== 'function') {
-		callback = noop;
-	}
-
-	if (!hash.match(/^[a-f0-9]{32}$/)) {
-		var err = new Error('Invalid MD5 hash');
-		callback(err, undefined);
-		return;
-	}
-
-	if (typeof language !== 'string') {
-		language = 'en';
-	} else {
-		if (allLanguages.indexOf(language) === -1) {
-			var err = new Error('Invalid language');
-			callback(err, undefined);
-			return;
-		}
-	}
-
-	if (typeof destination !== 'string') {
-		destination = os.tmpdir() + '/' + hash + '.srt';
-	}
-
+var downloadForHash = function (hash, language, destination, callback) {
 	request({
 		url: 'http://api.thesubdb.com',
 		qs: {
@@ -138,7 +117,7 @@ var download = function (hash, language, destination, callback) {
 		},
 		method: 'GET',
 		headers: {
-			'User-Agent': 'SubDB/1.0 (Pyrrot/0.1; http://github.com/jrhames/pyrrot-cli)',
+			'User-Agent': USER_AGENT_STRING,
 		}
 	}, function(err, response, body) {
 		if (err) {
@@ -183,8 +162,49 @@ var download = function (hash, language, destination, callback) {
 	});
 };
 
+var download = function (name, language, destination, callback) {
+	var separator = /^win/.test(process.platform) ? '\\' : '/';
+
+	callback = arguments[arguments.length - 1];
+	if (typeof callback !== 'function') {
+		callback = NOOP;
+	}
+
+	if (typeof language !== 'string') {
+		language = 'en';
+	} else {
+		if (allLanguages.indexOf(language) === -1) {
+			var err = new Error('Invalid language');
+			callback(err, undefined);
+			return;
+		}
+	}
+
+	if (name.match(/^[a-f0-9]{32}$/)) {
+		// Process for hash
+		var hash = name;
+		if (typeof destination !== 'string') {
+			destination = os.tmpdir() + separator + hash + '.srt';
+		}
+
+		downloadForHash(hash, language, destination, callback);
+	} else {
+		// Process for file
+		var filename = name;
+		generateHash(filename, function (err, hash) {
+			if (err) {
+				callback(err, undefined);
+			}
+
+			destination = path.dirname(filename) + separator
+				+ path.basename(filename, path.extname(filename))
+				+ '-' + language + '.srt';
+			downloadForHash(hash, language, destination, callback);
+		});
+	}
+};
+
 module.exports = {
-	generateHash: generateHash,
 	availableLanguages: availableLanguages,
 	download: download
 };
