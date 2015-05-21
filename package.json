@@ -1,0 +1,26 @@
+{
+  "name": "subfil",
+  "version": "0.1.0",
+  "description": "Command-line app to download subtitles",
+  "license": "MIT",
+  "repository": "divijbindlish/subfil",
+  "author": {
+    "name": "Divij Bindlish",
+    "email": "dvjbndlsh93@gmail.com",
+    "url": "divijbindlish.com"
+  },
+  "bin": "cli.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "files": [
+    "index.js",
+    "cli.js",
+    "languages.json"
+  ],
+  "dependencies": {
+    "MD5": "^1.2.2",
+    "request": "^2.55.0",
+    "video-extensions": "^1.0.0"
+  }
+}
