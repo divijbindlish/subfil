@@ -5,6 +5,7 @@ var path = require('path');
 var os = require('os');
 
 var isVideo = require('is-video');
+var allLanguages = require('./languages');
 var md5 = require('MD5');
 var request = require('request');
 
