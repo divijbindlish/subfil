@@ -20,7 +20,7 @@ var generateHash = function (filename, callback) {
 		callback = NOOP;
 	}
 
-	var ext = path.extname(filename);
+	var ext = path.extname(filename).slice(1);
 	if (videoExtensions.indexOf(ext) === -1) {
 		var err = new Error('Invalid video file');
 		callback(err, undefined);
