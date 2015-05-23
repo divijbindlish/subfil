@@ -196,9 +196,12 @@ var download = function (name, language, destination, callback) {
 				callback(err, undefined);
 			}
 
-			destination = path.dirname(filename) + separator
-				+ path.basename(filename, path.extname(filename))
-				+ '-' + language + '.srt';
+			if (typeof destination !== 'string') {
+				destination = path.dirname(filename) + separator
+					+ path.basename(filename, path.extname(filename))
+					+ '-' + language + '.srt';
+			}
+
 			downloadForHash(hash, language, destination, callback);
 		});
 	}
