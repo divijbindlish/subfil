@@ -61,8 +61,7 @@ var handleMultipleFiles = function(files, language, destination) {
 
 program
 	.version(pkg.version)
-	.usage('subfil <path>')
-	.option('-r, --recursive', 'download subtitles for files recursively')
+	.usage('subfil <path> [<path> ...]')
 	.option('-l, --language <language>', 'download subtitles in given language')
 	.option('-d, --destination <path>', 'download destination for subtitles')
 	.parse(process.argv);
@@ -81,12 +80,4 @@ if (typeof program.language === 'string') {
 	}
 }
 
-var i, files = [];
-
-if (program.recursive) {
-	var extensionFilter = '{' + videoExtensions.join(',') + '}';
-} else {
-	files = program.args;
-}
-
-handleMultipleFiles(files, program.language, program.destination);
+handleMultipleFiles(program.args, program.language, program.destination);
