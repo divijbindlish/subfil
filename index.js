@@ -178,6 +178,7 @@ var getLanguages = function (name, callback) {
 		generateHash(filename, function (err, hash) {
 			if (err) {
 				callback(err, undefined);
+				return;
 			}
 
 			getLanguagesForHash(hash, callback);
@@ -217,6 +218,7 @@ var download = function (name, language, destination, callback) {
 		generateHash(filename, function (err, hash) {
 			if (err) {
 				callback(err, undefined);
+				return;
 			}
 
 			if (typeof destination !== 'string') {
