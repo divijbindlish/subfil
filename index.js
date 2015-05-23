@@ -63,7 +63,7 @@ var generateHash = function (filename, callback) {
 	});
 };
 
-var availableLanguagesForHash = function (hash, callback) {
+var getLanguagesForHash = function (hash, callback) {
 	callback = arguments[arguments.length - 1];
 	if (typeof callback !== 'function') {
 		callback = NOOP;
@@ -162,7 +162,7 @@ var downloadForHash = function (hash, language, destination, callback) {
 	});
 };
 
-var availableLanguages = function (name, callback) {
+var getLanguages = function (name, callback) {
 	callback = arguments[arguments.length - 1];
 	if (typeof callback !== 'function') {
 		callback = NOOP;
@@ -171,7 +171,7 @@ var availableLanguages = function (name, callback) {
 	if (name.match(/^[a-f0-9]{32}$/)) {
 		// Process for hash
 		var hash = name;
-		availableLanguagesForHash(hash, callback);
+		getLanguagesForHash(hash, callback);
 	} else {
 		// Process for file
 		var filename = name;
@@ -180,7 +180,7 @@ var availableLanguages = function (name, callback) {
 				callback(err, undefined);
 			}
 
-			availableLanguagesForHash(hash, callback);
+			getLanguagesForHash(hash, callback);
 		});
 	}
 }
@@ -231,6 +231,6 @@ var download = function (name, language, destination, callback) {
 };
 
 module.exports = {
-	availableLanguages: availableLanguages,
+	getLanguages: getLanguages,
 	download: download
 };
