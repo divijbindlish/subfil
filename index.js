@@ -113,6 +113,7 @@ var downloadForHash = function (hash, language, destination, callback) {
 		url: 'http://api.thesubdb.com',
 		qs: {
 			action: 'download',
+			language: language,
 			hash: hash,
 		},
 		method: 'GET',
