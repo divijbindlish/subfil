@@ -184,7 +184,7 @@ var getLanguages = function (name, callback) {
 			getLanguagesForHash(hash, callback);
 		});
 	}
-}
+};
 
 var download = function (name, language, destination, callback) {
 	var separator = /^win/.test(process.platform) ? '\\' : '/';
