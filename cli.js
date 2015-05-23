@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+var async = require('async');
 var path = require('path');
 var program = require('commander');
 var subfil = require('./');
@@ -9,7 +10,7 @@ var allLanguages = require('./languages')
 
 var NOOP = function () {};
 
-var handleFile = function (file, callback) {
+var handleFile = function (file, language, destination, callback) {
 	callback = arguments[arguments.length - 1];
 	if (typeof callback !== 'function') {
 		callback = NOOP;
@@ -21,21 +22,42 @@ var handleFile = function (file, callback) {
 			switch (err.message) {
 				case 'Invalid video file':
 					console.log('Please specify a valid video file');
+					callback(undefined, false);
 					break;
 
-				case 'No subtitles for hash in specified language':
-					console.log('No subtitles available')
+				case 'No subtitles for hash':
+					console.log('No subtitles available for specified language')
+					callback(undefined, false);
 					break;
 
 				default:
-					callback(err);
-					return;
+					callback(err, undefined);
 			}
 		} else {
 			console.log('Subtitles downloaded successfully');
+			callback(undefined, true);
 		}
 	});
-}
+};
+
+var handleMultipleFiles = function(files, language, destination) {
+	var tasks = [];
+	files.forEach(function (file) {
+		tasks.push(function (callback) {
+			handleFile(file, language, destination, callback);
+		});
+	});
+
+	async.series(tasks, function (err, results) {
+		if (err) throw err;
+
+		var total = 0;
+		results.forEach(function (value) {
+			total += value;
+		});
+		console.log('Downloaded a total of ' + total + ' subtitle(s)');
+	});
+};
 
 program
 	.version(pkg.version)
@@ -67,13 +89,4 @@ if (program.recursive) {
 	files = program.args;
 }
 
-var language = program.language;
-var destination = program.destination;
-
-var file = files[0];
-
-handleFile(file, language, destination, function (err) {
-	if (err) {
-		throw err;
-	}
-});
+handleMultipleFiles(files, program.language, program.destination);

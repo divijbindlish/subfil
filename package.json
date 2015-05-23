@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "MD5": "^1.2.2",
+    "async": "^1.0.0",
     "commander": "^2.8.1",
     "request": "^2.55.0",
     "video-extensions": "^1.0.0"
