@@ -11,7 +11,7 @@
   },
   "bin": "cli.js",
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=0.12.0"
   },
   "files": [
     "index.js",
@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "MD5": "^1.2.2",
+    "commander": "^2.8.1",
     "request": "^2.55.0",
     "video-extensions": "^1.0.0"
   }
