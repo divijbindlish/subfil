@@ -63,7 +63,7 @@ var generateHash = function (filename, callback) {
 	});
 };
 
-var availableLanguages = function (hash, callback) {
+var availableLanguagesForHash = function (hash, callback) {
 	callback = arguments[arguments.length - 1];
 	if (typeof callback !== 'function') {
 		callback = NOOP;
@@ -161,6 +161,29 @@ var downloadForHash = function (hash, language, destination, callback) {
 		});
 	});
 };
+
+var availableLanguages = function (name, callback) {
+	callback = arguments[arguments.length - 1];
+	if (typeof callback !== 'function') {
+		callback = NOOP;
+	}
+
+	if (name.match(/^[a-f0-9]{32}$/)) {
+		// Process for hash
+		var hash = name;
+		availableLanguagesForHash(hash, callback);
+	} else {
+		// Process for file
+		var filename = name;
+		generateHash(filename, function (err, hash) {
+			if (err) {
+				callback(err, undefined);
+			}
+
+			availableLanguagesForHash(hash, callback);
+		});
+	}
+}
 
 var download = function (name, language, destination, callback) {
 	var separator = /^win/.test(process.platform) ? '\\' : '/';
