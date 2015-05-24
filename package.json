@@ -18,6 +18,21 @@
     "cli.js",
     "languages.json"
   ],
+  "keywords": [
+    "cli-app",
+    "cli",
+    "bin",
+    "subtitle",
+    "subtitles",
+    "download",
+    "subdb",
+    "subs",
+    "sub",
+    "srt",
+    "recursive",
+    "shell",
+    "script"
+  ],
   "dependencies": {
     "MD5": "^1.2.2",
     "async": "^1.0.0",
