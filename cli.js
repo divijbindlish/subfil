@@ -8,7 +8,10 @@ var fs = require('fs');
 var glob = require('glob');
 var pkg = require('./package');
 var videoExtensions = require('video-extensions');
-var allLanguages = require('./languages')
+var allLanguages = require('./languages');
+var updateNotifier = require('update-notifier');
+
+updateNotifier({pkg: pkg}).notify();
 
 var NOOP = function () {};
 
