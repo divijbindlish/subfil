@@ -1,6 +1,6 @@
 {
   "name": "subfil",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Command-line app to download subtitles",
   "license": "MIT",
   "repository": "divijbindlish/subfil",
@@ -24,6 +24,7 @@
     "commander": "^2.8.1",
     "glob": "^5.0.9",
     "request": "^2.55.0",
+    "update-notifier": "^0.5.0",
     "video-extensions": "^1.0.0"
   }
 }
