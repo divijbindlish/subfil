@@ -24,18 +24,18 @@ $ npm install --save subfil
 ```
 
 ```js
-subfil.getLanguages(filename, callback);
+// List available languages for hash
 subfil.getLanguages(hash, callback);
 ```
 
-List the languages available in SubDB for the given hash. The callback gets two arguments `(err, languages)` where `languages` is an array of the available languages.
+A `filename` can also be provided instead of the hash. The callback gets two arguments `(err, languages)` where `languages` is an array of the available languages.
 
 ```js
-subfil.download(filename[, language[, destination]], callback);
+// Download subtitles for hash
 subfil.download(hash[, language[, destination]], callback);
 ```
 
-Download subtitles for the hash/filename provided. The callback gets two arguments `(err, destination)` where destination is the filename to which the subtitles are downloaded. `language` defaults to `en` and `destination` defaults to a file in `tmp` directory for hash and an `srt` file in the same folder for a filename.
+A `filename` can also be provided instead of the hash. The callback gets two arguments `(err, destination)` where destination is the filename to which the subtitles are downloaded. `language` defaults to `en` and `destination` defaults to a file in `tmp` directory for hash and an `srt` file in the same folder for a filename.
 
 ## License
 
