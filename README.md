@@ -9,7 +9,7 @@ $ npm install -g subfil
 ```
 
 ```sh
-$ subfil "spiderman.avi" --destination subtitles.srt --language pt
+$ subfil "spiderman.avi" --language pt
 ```
 
 ## Info
@@ -36,3 +36,7 @@ subfil.download(hash[, language[, destination]], callback);
 ```
 
 Download subtitles for the hash/filename provided. The callback gets two arguments `(err, destination)` where destination is the filename to which the subtitles are downloaded. `language` defaults to `en` and `destination` defaults to a file in `tmp` directory for hash and an `srt` file in the same folder for a filename.
+
+## License
+
+MIT © [Divij Bindlish](http://divijbindlish.com)
