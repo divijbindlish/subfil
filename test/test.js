@@ -198,3 +198,39 @@ it('should download subtitles in custom destinations', function (done) {
     done();
   });
 });
+
+it('should continue downloading after getting errors', function (done) {
+  this.timeout(20000);
+
+  var files = [
+    'test/files/dir1/file1.mkv',
+    'test/files/dir1/file2.mkv',
+    'test/files/dir2/',
+    'test/files/file.mkv'
+  ];
+
+  var subtitles = [
+    'test/files/dir1/file1-en.mkv',
+    'test/files/dir1/file2-en.mkv',
+    'test/files/file.mkv'
+  ];
+
+  subtitles.forEach(function (file) {
+    assert(!fs.existsSync(file));
+  });
+
+  subfil.download(files, function (err, destinations) {
+    if (err) {
+      throw err;
+    }
+
+    assert.equal(destinations.length, subtitles.length);
+    for (var i in subtitles) {
+      assert(fs.existsSync(destinations[i]));
+      assert.equal(destinations[i], subtitles[i]);
+    }
+
+    done();
+  });
+
+});
