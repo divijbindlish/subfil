@@ -212,7 +212,7 @@ it('should continue downloading after getting errors', function (done) {
   var subtitles = [
     'test/files/dir1/file1-en.mkv',
     'test/files/dir1/file2-en.mkv',
-    'test/files/file.mkv'
+    'test/files/file-en.mkv'
   ];
 
   subtitles.forEach(function (file) {
