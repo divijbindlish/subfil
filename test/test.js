@@ -31,7 +31,7 @@ it('should throw an error for invalid video file', function (done) {
 });
 
 it('should list available languages', function (done) {
-  this.timeout(10000);
+  this.timeout(20000);
 
   var file = 'test/files/file.mkv';
 
@@ -43,7 +43,7 @@ it('should list available languages', function (done) {
 });
 
 it('should download subtitles for a single file', function (done) {
-  this.timeout(10000);
+  this.timeout(20000);
 
   var file = 'test/files/dir1/file1.mkv';
   var subtitles = 'test/files/dir1/file1-en.srt';
@@ -63,7 +63,7 @@ it('should download subtitles for a single file', function (done) {
 });
 
 it('should download subtitles for multiple files', function (done) {
-  this.timeout(10000);
+  this.timeout(20000);
 
   var files = [
     'test/files/dir1/file1.mkv',
@@ -95,7 +95,7 @@ it('should download subtitles for multiple files', function (done) {
 });
 
 it('should download subtitles for a single directory', function (done) {
-  this.timeout(10000);
+  this.timeout(20000);
 
   var dir = 'test/files/dir1';
 
@@ -124,7 +124,7 @@ it('should download subtitles for a single directory', function (done) {
 });
 
 it('should download subtitles for multiple directories', function (done) {
-  this.timeout(10000);
+  this.timeout(20000);
 
   var dirs = [
     'test/files/file.mkv',
@@ -160,7 +160,7 @@ it('should download subtitles for multiple directories', function (done) {
 });
 
 it('should download subtitles for other languages', function (done) {
-  this.timeout(10000);
+  this.timeout(20000);
 
   var file = 'test/files/dir1/file1.mkv';
   var subtitles = 'test/files/dir1/file1-pt.srt';
@@ -180,7 +180,7 @@ it('should download subtitles for other languages', function (done) {
 });
 
 it('should download subtitles in custom destinations', function (done) {
-  this.timeout(10000);
+  this.timeout(20000);
 
   var file = 'test/files/dir1/file1.mkv';
   var subtitles = 'test/files/subtitles.srt';
