@@ -30,6 +30,18 @@ it('should throw an error for invalid video file', function (done) {
   done();
 });
 
+it('should list available languages', function (done) {
+  this.timeout(10000);
+
+  var file = 'test/files/file.mkv';
+
+  subfil.getLanguages(file, function (err, languages) {
+    assert.deepEqual(languages, ['en', 'pt']);
+
+    done();
+  });
+});
+
 it('should download subtitles for a single file', function (done) {
   this.timeout(10000);
 
