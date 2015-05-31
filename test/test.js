@@ -226,10 +226,13 @@ it('should continue downloading after getting errors', function (done) {
 
     assert.equal(destinations.length, subtitles.length);
     for (var i in subtitles) {
-      if (status[i] === 'OK') {
-        assert(fs.existsSync(destinations[i]));
-        assert.equal(destinations[i], subtitles[i]);
+      if (status[i] !== 'OK') {
+        assert(!destinations[i]);
+        continue;
       }
+
+      assert(fs.existsSync(destinations[i]));
+      assert.equal(destinations[i], subtitles[i]);
     }
 
     done();
