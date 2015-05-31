@@ -34,6 +34,10 @@ if (typeof program.language === 'string') {
 
 console.log(chalk.blue('Downloading subtitle(s)'));
 
+if (program.args.length === 1) {
+  program.args = program.args[0];
+}
+
 subfil.download(program.args, program, function (err, status, dests, files) {
   if (err) {
     throw err;
