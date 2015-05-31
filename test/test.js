@@ -18,16 +18,15 @@ afterEach(function (done) {
   });
 });
 
-it('should throw an error for invalid video file', function (done) {
-  assert.throws(function () {
-    subfil.download('./index.js', function (err, destination) {
-      if (err) {
-        throw err;
-      }
-    })
-  });
+it('should give different status for invalid video file', function (done) {
+  subfil.download('./index.js', function (err, status, destination) {
+    if (err) {
+      throw err;
+    }
 
-  done();
+    assert.equal(status, 'INVALID_VIDEO_FILE');
+    done();
+  });
 });
 
 it('should list available languages', function (done) {
@@ -50,7 +49,7 @@ it('should download subtitles for a single file', function (done) {
 
   assert(!fs.existsSync(subtitles));
 
-  subfil.download(file, function (err, destination) {
+  subfil.download(file, function (err, status, destination) {
     if (err) {
       throw err;
     }
@@ -79,7 +78,7 @@ it('should download subtitles for multiple files', function (done) {
     assert(!fs.existsSync(file));
   });
 
-  subfil.download(files, function (err, destinations) {
+  subfil.download(files, function (err, status, destinations) {
     if (err) {
       throw err;
     }
@@ -108,15 +107,15 @@ it('should download subtitles for a single directory', function (done) {
     assert(!fs.existsSync(file));
   });
 
-  subfil.download(dir, {recursive: true}, function (err, destinations) {
+  subfil.download(dir, {recursive: true}, function (err, status, dests) {
     if (err) {
       throw err;
     }
 
-    assert.equal(destinations.length, subtitles.length);
+    assert.equal(dests.length, subtitles.length);
     for (var i in subtitles) {
-      assert(fs.existsSync(destinations[i]));
-      assert.equal(destinations[i], subtitles[i]);
+      assert(fs.existsSync(dests[i]));
+      assert.equal(dests[i], subtitles[i]);
     }
 
     done();
@@ -144,15 +143,15 @@ it('should download subtitles for multiple directories', function (done) {
     assert(!fs.existsSync(file));
   });
 
-  subfil.download(dirs, {recursive: true}, function (err, destinations) {
+  subfil.download(dirs, {recursive: true}, function (err, status, dests) {
     if (err) {
       throw err;
     }
 
-    assert.equal(destinations.length, subtitles.length);
+    assert.equal(dests.length, subtitles.length);
     for (var i in subtitles) {
-      assert(fs.existsSync(destinations[i]));
-      assert.equal(destinations[i], subtitles[i]);
+      assert(fs.existsSync(dests[i]));
+      assert.equal(dests[i], subtitles[i]);
     }
 
     done();
@@ -167,7 +166,7 @@ it('should download subtitles for other languages', function (done) {
 
   assert(!fs.existsSync(subtitles));
 
-  subfil.download(file, {language: 'pt'}, function (err, destination) {
+  subfil.download(file, {language: 'pt'}, function (err, status, destination) {
     if (err) {
       throw err;
     }
@@ -187,13 +186,13 @@ it('should download subtitles in custom destinations', function (done) {
 
   assert(!fs.existsSync(subtitles));
 
-  subfil.download(file, {destination: subtitles}, function (err, destination) {
+  subfil.download(file, {destination: subtitles}, function (err, stat, dest) {
     if (err) {
       throw err;
     }
 
-    assert(fs.existsSync(destination));
-    assert.equal(destination, subtitles);
+    assert(fs.existsSync(dest));
+    assert.equal(dest, subtitles);
 
     done();
   });
@@ -210,24 +209,27 @@ it('should continue downloading after getting errors', function (done) {
   ];
 
   var subtitles = [
-    'test/files/dir1/file1-en.mkv',
-    'test/files/dir1/file2-en.mkv',
-    'test/files/file-en.mkv'
+    'test/files/dir1/file1-en.srt',
+    'test/files/dir1/file2-en.srt',
+    undefined,
+    'test/files/file-en.srt'
   ];
 
   subtitles.forEach(function (file) {
     assert(!fs.existsSync(file));
   });
 
-  subfil.download(files, function (err, destinations) {
+  subfil.download(files, function (err, status, destinations) {
     if (err) {
       throw err;
     }
 
     assert.equal(destinations.length, subtitles.length);
     for (var i in subtitles) {
-      assert(fs.existsSync(destinations[i]));
-      assert.equal(destinations[i], subtitles[i]);
+      if (status[i] === 'OK') {
+        assert(fs.existsSync(destinations[i]));
+        assert.equal(destinations[i], subtitles[i]);
+      }
     }
 
     done();
