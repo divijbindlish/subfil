@@ -66,10 +66,12 @@ subfil.download(program.args, program, function (err, status, dests, files) {
     console.log(green('Downloaded a total of ' + count + ' subtitle(s)'));
   }
 
-  console.log('Couldn\'t download subtitles for the following files:');
-  for (i in status) {
-    if (status[i] !== 'OK') {
-      console.log(path.basename(files[i]) + ' : ' + red(status[i]));
+  if (count !== status.length) {
+    console.log('Couldn\'t download subtitles for the following files:');
+    for (i in status) {
+      if (status[i] !== 'OK') {
+        console.log(path.basename(files[i]) + ' : ' + red(status[i]));
+      }
     }
   }
 });
