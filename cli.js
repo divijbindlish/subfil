@@ -7,6 +7,7 @@ var allLanguages = require('./lib/data/languages');
 var updateNotifier = require('update-notifier');
 var chalk = require('chalk');
 var path = require('path');
+var Spinner = require('cli-spinner').Spinner;
 
 updateNotifier({pkg: pkg}).notify();
 
@@ -32,7 +33,9 @@ if (typeof program.language === 'string') {
   }
 }
 
-console.log(chalk.blue('Downloading subtitle(s)'));
+var spinner = new Spinner(chalk.blue('Downloading subtitles(s) %s'));
+spinner.setSpinnerString('|/-\\');
+spinner.start();
 
 if (program.args.length === 1) {
   program.args = program.args[0];
@@ -42,6 +45,9 @@ subfil.download(program.args, program, function (err, status, dests, files) {
   if (err) {
     throw err;
   }
+
+  spinner.stop();
+  console.log('');
 
   if (typeof status === 'string') {
     if (status === 'OK') {
