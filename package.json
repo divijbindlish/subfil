@@ -19,7 +19,7 @@
   "files": [
     "index.js",
     "cli.js",
-    "languages.json"
+    "lib/**/*"
   ],
   "keywords": [
     "cli-app",
