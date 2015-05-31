@@ -39,6 +39,7 @@
   "dependencies": {
     "MD5": "^1.2.2",
     "async": "^1.0.0",
+    "chalk": "^1.0.0",
     "commander": "^2.8.1",
     "glob": "^5.0.9",
     "request": "^2.55.0",
